@@ -2,10 +2,8 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 
-const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-
 async function signIn({ email, password }) {
-  const res = await axios.post(`${strapiUrl}/api/auth/local`, {
+  const res = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local`, {
     identifier: email,
     password,
   });

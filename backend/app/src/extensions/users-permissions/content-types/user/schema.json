@@ -88,7 +88,7 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::journal.journal",
-      "mappedBy": "users_permissions_user"
+      "mappedBy": "user"
     }
   }
 }

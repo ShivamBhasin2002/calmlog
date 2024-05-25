@@ -28,7 +28,7 @@ const Questioner = ({ questions }) => {
         ],
       },
 
-      ...questions.slice(0, 5).map(({ id, attributes }) => {
+      ...questions.map(({ id, attributes }) => {
         if (attributes.type === "preference")
           return {
             elements: [
@@ -59,9 +59,12 @@ const Questioner = ({ questions }) => {
   const survey = new Model(surveyJson);
   survey.applyTheme(LayeredDarkPanelless);
   survey.onComplete.add(async (res) => {
-    const mentalHealthScore = generateNumberFromArray(Object.values(res.data));
+    const mentalHealthScore = (await axios.post("/api/getMetnalHealthScore", { ans: res.data })).data.mentalHealthScore;
     const lastQuestionare = getCurrentDateFormatted();
-    const tasks = [mentalHealthScore];
+    let tasks = [];
+    if (mentalHealthScore === 2) tasks = [10, 11, 12, 13, 14, 15, 16, 17, 18];
+    else if (mentalHealthScore === 3) tasks = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    else if (mentalHealthScore === 1) tasks = [19];
     await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${session.data.id}`, { mentalHealthScore, lastQuestionare, tasks });
     window.open("/dashboard", "_self");
   });
@@ -83,7 +86,8 @@ Questioner.getInitialProps = async (ctx) => {
     };
   }
   let questions = (await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/questions`)).data.data;
-  if (ctx.query.questions) questions = questions.slice(0, questions);
+  console.log(typeof ctx.query.questions);
+  if (ctx.query.questions) questions = questions.slice(0, ctx.query.questions);
   return {
     questions,
   };

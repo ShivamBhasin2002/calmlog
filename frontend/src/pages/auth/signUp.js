@@ -2,19 +2,23 @@ import Head from "next/head";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import axios from "axios";
 
 export default function SignIn() {
   const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const result = await signIn("credentials", {
-      redirect: false,
+    console.log(e.target);
+    const result = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/register`, {
       email: e.target.email.value,
+      username: e.target.username.value,
       password: e.target.password.value,
     });
-    if (result.ok) {
-      router.replace("/");
+    console.log(result.data);
+    if (result.data.jwt) {
+      console.log(result);
+      window.open("/auth/signIn", "_self");
       return;
     }
     alert("Credential is not valid");
@@ -98,14 +102,14 @@ export default function SignIn() {
                       <div className="mb-4">
                         <label className="mb-2.5 block font-medium text-black dark:text-white">Username</label>
                         <div className="relative">
-                          <input type="username" placeholder="Enter your username" className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" name="text" required />
+                          <input type="text" placeholder="Enter your username" className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" name="username" required />
 
                           <span className="absolute right-4 top-4">
                             <svg id="SvgjsSvg1001" width="22" height="22" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlnsXlink="http://www.w3.org/1999/xlink">
                               <defs id="SvgjsDefs1002"></defs>
                               <g id="SvgjsG1008">
                                 <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 29 29" width="22" height="22">
-                                  <path d="M14.5 2A12.514 12.514 0 0 0 2 14.5 12.521 12.521 0 0 0 14.5 27a12.5 12.5 0 0 0 0-25Zm7.603 19.713a8.48 8.48 0 0 0-15.199.008A10.367 10.367 0 0 1 4 14.5a10.5 10.5 0 0 1 21 0 10.368 10.368 0 0 1-2.897 7.213ZM14.5 7a4.5 4.5 0 1 0 4.5 4.5A4.5 4.5 0 0 0 14.5 7Z" fill="#fff" class="color000 svgShape"></path>
+                                  <path d="M14.5 2A12.514 12.514 0 0 0 2 14.5 12.521 12.521 0 0 0 14.5 27a12.5 12.5 0 0 0 0-25Zm7.603 19.713a8.48 8.48 0 0 0-15.199.008A10.367 10.367 0 0 1 4 14.5a10.5 10.5 0 0 1 21 0 10.368 10.368 0 0 1-2.897 7.213ZM14.5 7a4.5 4.5 0 1 0 4.5 4.5A4.5 4.5 0 0 0 14.5 7Z" fill="#fff" className="color000 svgShape"></path>
                                 </svg>
                               </g>
                             </svg>

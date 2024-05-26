@@ -90,6 +90,30 @@ export default function Dashboard({ user }) {
     ]);
   };
 
+  useEffect(() => {
+    Array.from({ length: 31 }, (_, i) => i + 1).map((i) => {
+      axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
+        data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 1, task: 1, user: user.id },
+      });
+      axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
+        data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 2, task: 2, user: user.id },
+      });
+      if (i % 2 == 0) {
+        axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
+          data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 3, task: 3, user: user.id },
+        });
+        axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
+          data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 4, task: 4, user: user.id },
+        });
+      }
+    });
+    ["Deep Breathing for 5 minutes", "Yoga for 15 minutes (Suryanamaskara and pranayama suggested)", "Walking for 10 mins", "Listen to Music that calms you", "Journaling (Write 5 positive things about today)", "Progressive Muscle Relaxation ", "Read for 30 mins or read at least 5 pages", "engage in a hobby you like and haven't done in a while", "spend an 15 minutes with a friend or family", "Intense workout such as running or swimming ", "engaging in organisational activities such as deep cleaning or organising digital files", "engage in coloring or crafts", "set 3 specific goals to complete in a day and finish them", "write positive affirmations of yourself and read them aloud", "perform visualization exercises (relax and imagine a peaceful place or outcome)", "Go to the nearest park and observe your surroundings", "Watch a movie you have been putting off", "Engage in Self-Care Practices(Prioritize self-care activities)"].map((task) => {
+      axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/tasks`, {
+        data: { brief: task },
+      });
+    });
+  }, []);
+
   return (
     <DefaultLayout user={user} pageName="Daily Tasks">
       <div className="rounded-sm border border-stroke bg-white px-5 pb-6 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">

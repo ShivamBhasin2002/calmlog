@@ -7,9 +7,9 @@ const DefaultLayout = ({ children, user, pageName }) => {
   const [showQuestion, toggleQuestion] = useState(false);
 
   useEffect(() => {
-    const forceQuestionare = !user.lastQuestionare || (new Date().setHours(0, 0, 0, 0) - new Date(user.lastQuestionare).setHours(0, 0, 0, 0) >= 30 * 24 * 60 * 60 * 1000 && !window.location.pathname.includes("questioner"));
+    const forceQuestionare = (!user.lastQuestionare || new Date().setHours(0, 0, 0, 0) - new Date(user.lastQuestionare).setHours(0, 0, 0, 0) >= 30 * 24 * 60 * 60 * 1000) && !window.location.pathname.includes("questioner");
     toggleQuestion(forceQuestionare);
-  });
+  }, []);
 
   if (showQuestion)
     return (

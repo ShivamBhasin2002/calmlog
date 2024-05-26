@@ -3,7 +3,7 @@ import { Model } from "survey-core";
 import { Survey } from "survey-react-ui";
 import { LayeredDarkPanelless } from "survey-core/themes/layered-dark-panelless";
 import axios from "axios";
-import { getSession, useSession } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 
 import dynamic from "next/dynamic";
 const DefaultLayout = dynamic(() => import("@/Components/DefaultLayout"), { ssr: false });
@@ -35,6 +35,8 @@ export const getPopulatedUsers = async (user_id) => {
 
 const Questioner = ({ questions, user }) => {
   const session = useSession();
+  if (!questions) return null;
+  if (!user) signOut();
   const surveyJson = {
     pages: [
       {
@@ -45,8 +47,7 @@ const Questioner = ({ questions, user }) => {
           },
         ],
       },
-
-      ...questions.map(({ id, attributes }) => {
+      ...questions?.map(({ id, attributes }) => {
         if (attributes.type === "preference")
           return {
             elements: [
@@ -75,7 +76,6 @@ const Questioner = ({ questions, user }) => {
     showPreviewBeforeComplete: "showAnsweredQuestions",
   };
   const survey = new Model(surveyJson);
-  survey.applyTheme(LayeredDarkPanelless);
   survey.onComplete.add(async (res) => {
     const mentalHealthScore = (await axios.post("/api/getMetnalHealthScore", { ans: res.data })).data.mentalHealthScore;
     const lastQuestionare = getCurrentDateFormatted();
@@ -87,8 +87,8 @@ const Questioner = ({ questions, user }) => {
     window.open("/dashboard", "_self");
   });
   return (
-    <DefaultLayout user={user} pageName="Questioner">
-      <div className="min-h-screen bg-[#262933]">
+    <DefaultLayout user={user} pageName="Questionnaire">
+      <div className="min-h-screen bg-bodydark-2 [&>*]:!bg-transparent">
         <Survey model={survey} />
       </div>
     </DefaultLayout>

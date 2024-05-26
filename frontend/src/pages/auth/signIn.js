@@ -119,7 +119,7 @@ export default function SignIn() {
 
                       <div className="mt-6 text-center">
                         <p>
-                          Don’t have any account?{" "}
+                          Don’t have an account?{" "}
                           <Link href="/auth/signUp" className="text-primary">
                             Sign Up
                           </Link>

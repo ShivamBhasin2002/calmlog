@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@tensorflow/tfjs": "^4.19.0",
     "react-icons": "^5.2.1"
   }
 }

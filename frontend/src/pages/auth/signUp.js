@@ -138,6 +138,14 @@ export default function SignIn() {
                           Sign Up
                         </button>
                       </div>
+                      <div className="mt-6 text-center">
+                        <p>
+                          Have an account?{" "}
+                          <Link href="/auth/signIn" className="text-primary">
+                            Sign In
+                          </Link>
+                        </p>
+                      </div>
                     </form>
                   </div>
                 </div>

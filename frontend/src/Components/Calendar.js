@@ -2,12 +2,16 @@ import React from "react";
 
 const DateBlock = ({ tasksDone, totalTasks, date }) => (
   <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-    <span className="font-medium text-black dark:text-white">{date}</span>
-    <div className="group h-16 w-full flex-grow cursor-pointer py-1 md:h-30">
-      <span className="group-hover:text-primary md:hidden">
-        {tasksDone ?? 0} / {totalTasks ?? 0}
-      </span>
-    </div>
+    {date && (
+      <>
+        <span className="font-medium text-black">{date}</span>
+        <div className="group h-16 w-full flex-grow cursor-pointer py-1 md:h-30">
+          <span className="text-black md:hidden">
+            {tasksDone ?? 0} / {totalTasks ?? 0}
+          </span>
+        </div>
+      </>
+    )}
   </td>
 );
 

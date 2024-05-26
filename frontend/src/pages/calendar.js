@@ -1,6 +1,5 @@
 "use client";
 import Calendar from "@/Components/Calendar";
-import ChartOne from "@/Components/Chart";
 import { getCurrentDateFormatted } from "@/pages/questioner";
 import axios from "axios";
 import { getSession, signOut } from "next-auth/react";
@@ -9,6 +8,7 @@ import { useRouter } from "next/router";
 
 import dynamic from "next/dynamic";
 const DefaultLayout = dynamic(() => import("@/Components/DefaultLayout", { ssr: false }));
+const ChartOne = dynamic(() => import("@/Components/Chart", { ssr: false }));
 const DonutChart = dynamic(() => import("@/Components/DonutChart", { ssr: false }));
 
 export const getPopulatedUsers = async (user_id) => {
@@ -55,7 +55,7 @@ export default function Dashboard({ user }) {
       <Calendar tasksVsDate={tasksVsDate} user={user} />
       <div className="flex">
         <ChartOne tasksVsDate={tasksVsDate} />
-        <DonutChart />
+        <DonutChart mentalHealthScore={user.mentalHealthScore} />
       </div>
     </DefaultLayout>
   );

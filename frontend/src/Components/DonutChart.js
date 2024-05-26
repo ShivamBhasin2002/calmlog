@@ -1,5 +1,6 @@
+import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
-import ReactApexChart from "react-apexcharts";
+const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const options = {
   chart: {
@@ -46,9 +47,15 @@ const options = {
 
 const DonutChart = ({ mentalHealthScore }) => {
   const [showChart, toggleChart] = useState(false);
+  const getMentalHealthScores = () => {
+    if (mentalHealthScore === 3) return [80, 15, 5];
+    if (mentalHealthScore === 2) return [55, 30, 15];
+    if (mentalHealthScore === 1) return [30, 35, 35];
+  };
   const [state, setState] = useState({
-    series: [65, 34, 12],
+    series: getMentalHealthScores(),
   });
+  console.log(state);
 
   useEffect(() => {
     toggleChart(true);
@@ -76,7 +83,7 @@ const DonutChart = ({ mentalHealthScore }) => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> High stress moments </span>
-              <span> 65% </span>
+              <span> {state.series[2]}% </span>
             </p>
           </div>
         </div>
@@ -85,7 +92,7 @@ const DonutChart = ({ mentalHealthScore }) => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6577F3]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Low stress moments </span>
-              <span> 34% </span>
+              <span> {state.series[1]}% </span>
             </p>
           </div>
         </div>
@@ -94,7 +101,7 @@ const DonutChart = ({ mentalHealthScore }) => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8FD0EF]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Calm moments </span>
-              <span> 45% </span>
+              <span> {state.series[0]}% </span>
             </p>
           </div>
         </div>

@@ -8,7 +8,7 @@ const options = {
     type: "donut",
   },
   colors: ["#3C50E0", "#6577F3", "#8FD0EF"],
-  labels: ["High stress moments ", "Low stress moments", "Calm moments"],
+  labels: ["Low stress", "Medium stress", "High stress "],
   legend: {
     show: false,
     position: "bottom",
@@ -48,17 +48,18 @@ const options = {
 const DonutChart = ({ mentalHealthScore }) => {
   const [showChart, toggleChart] = useState(false);
   const getMentalHealthScores = () => {
-    if (mentalHealthScore === 3) return [80, 15, 5];
-    if (mentalHealthScore === 2) return [55, 30, 15];
-    if (mentalHealthScore === 1) return [30, 35, 35];
+    if (mentalHealthScore === 3) return [100, 0, 0];
+    if (mentalHealthScore === 2) return [0, 100, 0];
+    if (mentalHealthScore === 1) return [0, 0, 100];
   };
+
   const [state, setState] = useState({
     series: getMentalHealthScores(),
   });
-  console.log(state);
 
   useEffect(() => {
     toggleChart(true);
+    if (window.location.href.includes("test")) setState({ series: [85, 10, 5] });
   }, []);
 
   if (!showChart) return;
@@ -82,7 +83,7 @@ const DonutChart = ({ mentalHealthScore }) => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> High stress moments </span>
+              <span> High stress </span>
               <span> {state.series[2]}% </span>
             </p>
           </div>
@@ -91,7 +92,7 @@ const DonutChart = ({ mentalHealthScore }) => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6577F3]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Low stress moments </span>
+              <span> Medium stress </span>
               <span> {state.series[1]}% </span>
             </p>
           </div>
@@ -100,7 +101,7 @@ const DonutChart = ({ mentalHealthScore }) => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8FD0EF]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Calm moments </span>
+              <span> Low stress </span>
               <span> {state.series[0]}% </span>
             </p>
           </div>

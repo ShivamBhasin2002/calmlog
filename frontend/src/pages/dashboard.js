@@ -5,7 +5,7 @@ import axios from "axios";
 import { getSession, signOut } from "next-auth/react";
 import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const getPopulatedUsers = async (user_id) => {
   let user = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${user_id}/?populate=*`);
@@ -89,6 +89,7 @@ export default function Dashboard({ user }) {
       }),
     ]);
   };
+
   return (
     <DefaultLayout user={user} pageName="Daily Tasks">
       <div className="rounded-sm border border-stroke bg-white px-5 pb-6 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">

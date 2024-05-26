@@ -1,13 +1,17 @@
-"use client";
 import Sidebar from "@/Components/Sidebar";
 import Head from "next/head";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const DefaultLayout = ({ children, user, pageName }) => {
-  const forceQuestionare = !user.lastQuestionare || new Date().setHours(0, 0, 0, 0) - new Date(user.lastQuestionare).setHours(0, 0, 0, 0) >= 30 * 24 * 60 * 60 * 1000;
+  const [showQuestion, toggleQuestion] = useState(false);
 
-  if (forceQuestionare && typeof window !== "undefined" && !window.location.pathname.includes("questioner"))
+  useEffect(() => {
+    const forceQuestionare = !user.lastQuestionare || (new Date().setHours(0, 0, 0, 0) - new Date(user.lastQuestionare).setHours(0, 0, 0, 0) >= 30 * 24 * 60 * 60 * 1000 && !window.location.pathname.includes("questioner"));
+    toggleQuestion(forceQuestionare);
+  });
+
+  if (showQuestion)
     return (
       <div className="flex h-screen overflow-hidden">
         <Head>
@@ -36,7 +40,7 @@ const DefaultLayout = ({ children, user, pageName }) => {
       <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
         <main>
           <div className="mx-auto max-w-screen-2xl p-4 pl-[306px] w-full min-h-screen md:p-6 2xl:p-10 dark:bg-boxdark-2 dark:text-bodydark">
-            <h2 className="text-title-md2 font-semibold text-black dark:text-white mb-8" >{pageName}</h2>
+            <h2 className="text-title-md2 font-semibold text-black dark:text-white mb-8">{pageName}</h2>
             {children}
           </div>
         </main>

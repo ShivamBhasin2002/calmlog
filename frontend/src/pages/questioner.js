@@ -5,6 +5,9 @@ import { LayeredDarkPanelless } from "survey-core/themes/layered-dark-panelless"
 import axios from "axios";
 import { getSession, useSession } from "next-auth/react";
 
+import dynamic from "next/dynamic";
+const DefaultLayout = dynamic(() => import("@/Components/DefaultLayout"), { ssr: false });
+
 export function getCurrentDateFormatted() {
   const date = new Date();
 
@@ -15,7 +18,22 @@ export function getCurrentDateFormatted() {
   return `${year}-${month}-${day}`;
 }
 
-const Questioner = ({ questions }) => {
+export const getPopulatedUsers = async (user_id) => {
+  let user = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${user_id}/?populate=*`);
+  if (!user) return null;
+  user = user.data;
+  user = {
+    ...user,
+    tasks: user.tasks.map((task) => {
+      const status = user.task_progresses.find((t) => t.executionDate === getCurrentDateFormatted() && t.task_id === task.id);
+      if (status) return { ...task, status };
+      else return { ...task };
+    }),
+  };
+  return user;
+};
+
+const Questioner = ({ questions, user }) => {
   const session = useSession();
   const surveyJson = {
     pages: [
@@ -69,9 +87,11 @@ const Questioner = ({ questions }) => {
     window.open("/dashboard", "_self");
   });
   return (
-    <div className="min-h-screen bg-[#262933]">
-      <Survey model={survey} />
-    </div>
+    <DefaultLayout user={user} pageName="Questioner">
+      <div className="min-h-screen bg-[#262933]">
+        <Survey model={survey} />
+      </div>
+    </DefaultLayout>
   );
 };
 
@@ -86,10 +106,11 @@ Questioner.getInitialProps = async (ctx) => {
     };
   }
   let questions = (await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/questions`)).data.data;
-  console.log(typeof ctx.query.questions);
   if (ctx.query.questions) questions = questions.slice(0, ctx.query.questions);
+  let user = await getPopulatedUsers(session?.id);
   return {
     questions,
+    user,
   };
 };
 

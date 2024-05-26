@@ -1,4 +1,5 @@
-import DefaultLayout from "@/Components/DefaultLayout";
+import dynamic from "next/dynamic";
+const DefaultLayout = dynamic(() => import("@/Components/DefaultLayout"), { ssr: false });
 import { getCurrentDateFormatted } from "@/pages/questioner";
 import axios from "axios";
 import { getSession, signOut } from "next-auth/react";
@@ -31,11 +32,10 @@ const Task = ({ task, toggleTask, toggleLoading, isLoading, user }) => (
     </td>
     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
       <div>
-        <label htmlFor="toggle3" className="flex cursor-pointer select-none items-center">
+        <label className="flex cursor-pointer select-none items-center">
           <div className="relative">
             <input
               type="checkbox"
-              id="toggle3"
               className="sr-only"
               onClick={() => {
                 if (isLoading) return;
@@ -108,7 +108,7 @@ export default function Dashboard({ user }) {
             </thead>
             <tbody>
               {tasks?.map((task, key) => (
-                <Task key={key} task={task} toggleLoading={toggleLoading} toggleTask={toggleTask} isLoading={isLoading} user={user}/>
+                <Task key={key} task={task} toggleLoading={toggleLoading} toggleTask={toggleTask} isLoading={isLoading} user={user} />
               ))}
             </tbody>
           </table>

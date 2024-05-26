@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "apexcharts": "^3.49.1",
     "axios": "^1.6.8",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
     "react": "^18",
+    "react-apexcharts": "^1.4.1",
     "react-dom": "^18",
     "survey-core": "^1.10.4",
     "survey-react": "^1.10.3",

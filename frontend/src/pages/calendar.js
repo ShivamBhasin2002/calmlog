@@ -1,6 +1,6 @@
 "use client";
 import Calendar from "@/Components/Calendar";
-import { getCurrentDateFormatted } from "@/pages/questioner";
+import { getCurrentDateFormatted } from "@/pages/questionnaire";
 import axios from "axios";
 import { getSession, signOut } from "next-auth/react";
 import { redirect } from "next/dist/server/api-utils";

@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 const DefaultLayout = dynamic(() => import("@/Components/DefaultLayout"), { ssr: false });
-import { getCurrentDateFormatted } from "@/pages/questioner";
+import { getCurrentDateFormatted } from "@/pages/questionnaire";
 import axios from "axios";
 import { getSession, signOut } from "next-auth/react";
 import { redirect } from "next/dist/server/api-utils";
@@ -90,29 +90,35 @@ export default function Dashboard({ user }) {
     ]);
   };
 
-  useEffect(() => {
-    Array.from({ length: 31 }, (_, i) => i + 1).map((i) => {
-      axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
-        data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 1, task: 1, user: user.id },
-      });
-      axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
-        data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 2, task: 2, user: user.id },
-      });
-      if (i % 2 == 0) {
-        axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
-          data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 3, task: 3, user: user.id },
-        });
-        axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
-          data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 4, task: 4, user: user.id },
-        });
-      }
-    });
-    ["Deep Breathing for 5 minutes", "Yoga for 15 minutes (Suryanamaskara and pranayama suggested)", "Walking for 10 mins", "Listen to Music that calms you", "Journaling (Write 5 positive things about today)", "Progressive Muscle Relaxation ", "Read for 30 mins or read at least 5 pages", "engage in a hobby you like and haven't done in a while", "spend an 15 minutes with a friend or family", "Intense workout such as running or swimming ", "engaging in organisational activities such as deep cleaning or organising digital files", "engage in coloring or crafts", "set 3 specific goals to complete in a day and finish them", "write positive affirmations of yourself and read them aloud", "perform visualization exercises (relax and imagine a peaceful place or outcome)", "Go to the nearest park and observe your surroundings", "Watch a movie you have been putting off", "Engage in Self-Care Practices(Prioritize self-care activities)"].map((task) => {
-      axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/tasks`, {
-        data: { brief: task },
-      });
-    });
-  }, []);
+  //   useEffect(() => {
+  //     Array.from({ length: 31 }, (_, i) => i + 1).map((i) => {
+  //       axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
+  //         data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 1, task: 1, user: user.id },
+  //       });
+  //       axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
+  //         data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 2, task: 2, user: user.id },
+  //       });
+  //       if (i % 2 == 0) {
+  //         axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
+  //           data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 3, task: 3, user: user.id },
+  //         });
+  //         axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/task-progresses`, {
+  //           data: { executionDate: `2024-05-${i < 10 ? `0${i}` : i}`, task_id: 4, task: 4, user: user.id },
+  //         });
+  //       }
+  //     });
+  //     ["Deep Breathing for 5 minutes", "Yoga for 15 minutes (Suryanamaskara and pranayama suggested)", "Walking for 10 mins", "Listen to Music that calms you", "Journaling (Write 5 positive things about today)", "Progressive Muscle Relaxation ", "Read for 30 mins or read at least 5 pages", "engage in a hobby you like and haven't done in a while", "spend an 15 minutes with a friend or family", "Intense workout such as running or swimming ", "engaging in organisational activities such as deep cleaning or organising digital files", "engage in coloring or crafts", "set 3 specific goals to complete in a day and finish them", "write positive affirmations of yourself and read them aloud", "perform visualization exercises (relax and imagine a peaceful place or outcome)", "Go to the nearest park and observe your surroundings", "Watch a movie you have been putting off", "Engage in Self-Care Practices(Prioritize self-care activities)"].map((task) => {
+  //       axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/tasks`, {
+  //         data: { brief: task },
+  //       });
+  //     });
+
+  // ["I found myself getting upset by quite trivial things.", "I was aware of dryness of my mouth.", "I couldn't seem to experience any positive feeling at all.", "I experienced breathing difficulty (eg, excessively rapid breathing, breathlessness in the absence of physical exertion).", "I just couldn&#39;t seem to get going.", "I tended to over-react to situations.", "I had a feeling of shakiness (eg, legs going to give way).", "I found it difficult to relax.", "I found myself in situations that made me so anxious I was most relieved when they ended.", "I felt that I had nothing to look forward to.", "I found myself getting upset rather easily.", "I felt that I was using a lot of nervous energy.", "I felt sad and depressed.", "I found myself getting impatient when I was delayed in any way (eg, elevators, traffic lights, being kept waiting).", "I had a feeling of faintness.", "I felt that I had lost interest in just about everything.", "I felt I wasn&#39;t worth much as a person.", "I felt that I was rather touchy.", "I perspired noticeably (eg, hands sweaty) in the absence of high temperatures or physical exertion.", "I felt scared without any good reason.", "I felt that life wasn&#39;t worthwhile.", "I found it hard to wind down.", "I had difficulty in swallowing.", "I couldn&#39;t seem to get any enjoyment out of the things I did.", "I was aware of the action of my heart in the absence of physical exertion (eg, sense of heart rate increase, heart missing a beat).", "I felt down-hearted and blue.", "I found that I was very irritable.", "I felt I was close to panic.", "I found it hard to calm down after something upset me.", "I feared that I would be &quot;thrown&quot; by some trivial but unfamiliar task.", "I was unable to become enthusiastic about anything.", "I found it difficult to tolerate interruptions to what I was doing.", "I was in a state of nervous tension.", "I felt I was pretty worthless.", "I was intolerant of anything that kept me from getting on with what I was doing.", "I felt terrified.", "I could see nothing in the future to be hopeful about.", "I felt that life was meaningless.", "I found myself getting agitated.", "I was worried about situations in which I might panic and make a fool of myself.", "I experienced trembling (eg, in the hands).", "I found it difficult to work up the initiative to do things."].map((q) => {
+  //   axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/questions`, {
+  //     data: { question: q, type: "preference" },
+  //   });
+  // });
+  //   }, []);
 
   return (
     <DefaultLayout user={user} pageName="Daily Tasks">

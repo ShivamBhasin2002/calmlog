@@ -16,7 +16,7 @@ const Sidebar = () => {
     <aside ref={sidebar} className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 translate-x-0`}>
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <Link href="/">
-          <Image width={100} height={32} src={"/logo.jpeg"} alt="Logo" priority />
+          <Image width={300} height={60} src={"/logo.png"} alt="Logo" priority />
         </Link>
       </div>
 
@@ -43,7 +43,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/auestionnaire" className={`group relative flex items-center cursor-pointer gap-2.5 rounded-sm px-4 py-2 font-medium text-white duration-300 ease-in-out dark:hover:bg-bodydark ${pathname.includes("questionnaire") && "bg-graydark dark:bg-bodydark"}`}>
+                <Link href="/questionnaire" className={`group relative flex items-center cursor-pointer gap-2.5 rounded-sm px-4 py-2 font-medium text-white duration-300 ease-in-out dark:hover:bg-bodydark ${pathname.includes("questionnaire") && "bg-graydark dark:bg-bodydark"}`}>
                   <svg className="fill-current" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clipPath="url(#clip0_130_9801)">
                       <path d="M10.8563 0.55835C10.5188 0.55835 10.2095 0.8396 10.2095 1.20522V6.83022C10.2095 7.16773 10.4907 7.4771 10.8563 7.4771H16.8751C17.0438 7.4771 17.2126 7.39272 17.3251 7.28022C17.4376 7.1396 17.4938 6.97085 17.4938 6.8021C17.2688 3.28647 14.3438 0.55835 10.8563 0.55835ZM11.4751 6.15522V1.8521C13.8095 2.13335 15.6938 3.8771 16.1438 6.18335H11.4751V6.15522Z" fill="" />
